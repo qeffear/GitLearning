@@ -3,32 +3,37 @@ using System.Collections;
 
 public class Counter : MonoBehaviour
 {
-    private int counter = 0;
-    private bool isCounting = false;
-    private Coroutine countingCoroutine;
-
-    void Update()
+    private int _counter = 0;
+    private float _count = 0.5f;
+    private bool _isCounting = false;
+    private Coroutine _countingCoroutine;
+    private InputReader _inputReader = new InputReader();
+    
+    private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (isCounting)
+            if (_isCounting)
             {
-                StopCoroutine(countingCoroutine);
-                isCounting = false;
+                StopCoroutine(_countingCoroutine);
+                _isCounting = false;
             }
             else
             {
-                countingCoroutine = StartCoroutine(CountCoroutine());
-                isCounting = true;
+                _countingCoroutine = StartCoroutine(_inputReader.CountCoroutine(_counter, _count));
+                _isCounting = true;
             }
         }
     }
+}
 
-    IEnumerator CountCoroutine()
+class InputReader
+{
+    public IEnumerator CountCoroutine(int counter, float _count)
     {
         while (true)
         {
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(_count);
             counter++;
             Debug.Log("Ñ÷¸ò÷èê: " + counter);
         }
