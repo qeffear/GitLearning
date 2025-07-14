@@ -3,25 +3,21 @@ using System.Collections;
 
 public class Counter : MonoBehaviour
 {
+    [SerializeField] private InputReader _inputReader;
+
     private int _counter = 0;
     private float _delay = 0.5f;
     private bool _isCounting = false;
     private Coroutine _countingCoroutine;
-    private InputReader _inputReader;
-    private CounterDisplay _display;
 
-    private void Awake()
+    private void OnEnable()
     {
-        _inputReader = new InputReader();
-        _display = new CounterDisplay();
+        _inputReader.Clicked += ToggleCounting;
     }
 
-    private void Update()
+    private void OnDisable()
     {
-        if (_inputReader.GetMouseButtonDown())
-        {
-            ToggleCounting();
-        }
+        _inputReader.Clicked -= ToggleCounting;
     }
 
     private void ToggleCounting()
@@ -57,7 +53,7 @@ public class Counter : MonoBehaviour
         {
             yield return new WaitForSeconds(_delay);
             _counter++;
-            _display.ShowCount(_counter);
+            Debug.Log(_counter);
         }
     }
 }

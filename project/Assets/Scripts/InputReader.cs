@@ -1,9 +1,15 @@
+using System;
 using UnityEngine;
 
 public class InputReader : MonoBehaviour
 {
-    public bool GetMouseButtonDown()
+    public event Action Clicked;
+
+    public void Update()
     {
-        return Input.GetMouseButtonDown(0);
+        if(Input.GetMouseButtonDown(0))
+        {
+            Clicked?.Invoke();
+        }
     }
 }
