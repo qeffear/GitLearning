@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class Counter : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class Counter : MonoBehaviour
     private float _delay = 0.5f;
     private bool _isCounting = false;
     private Coroutine _countingCoroutine;
+
+    public event Action<int> CounterChanged;
 
     private void OnEnable()
     {
@@ -53,6 +56,7 @@ public class Counter : MonoBehaviour
         {
             yield return new WaitForSeconds(_delay);
             _counter++;
+            CounterChanged?.Invoke(_counter);
             Debug.Log(_counter);
         }
     }
