@@ -1,18 +1,18 @@
 using UnityEngine;
-using System.Collections;
 using System;
+using System.Collections;
 
 public class Counter : MonoBehaviour
 {
     [SerializeField] private InputReader _inputReader;
 
-    private int _counter = 0;
+    private int _value;
     private float _delay = 0.5f;
-    private bool _isCounting = false;
-    private Coroutine _countingCoroutine;
+    private bool _isValue;
+    private Coroutine _countingRoutine;
     private WaitForSeconds _waitDelay;
-
-    public event Action<int> Changed;
+    
+    public event Action<int> ValueChanged;
 
     private void Awake()
     {
@@ -21,50 +21,49 @@ public class Counter : MonoBehaviour
 
     private void OnEnable()
     {
-        _inputReader.Clicked += ToggleCounting;
+        _inputReader.Clicked += ToggleValue;
     }
 
     private void OnDisable()
     {
-        _inputReader.Clicked -= ToggleCounting;
+        _inputReader.Clicked -= ToggleValue;
     }
 
-    private void ToggleCounting()
+    private void ToggleValue()
     {
-        if (_isCounting)
+        if (_isValue)
         {
-            StopCounting();
+            StopValue();
         }
         else
         {
-            StartCounting();
+            StartValue();
         }
     }
 
-    private void StartCounting()
+    private void StartValue()
     {
-        _countingCoroutine = StartCoroutine(CountRoutine());
-        _isCounting = true;
+        _countingRoutine = StartCoroutine(Numbering());
+        _isValue = true;
     }
 
-    private void StopCounting()
+    private void StopValue()
     {
-        if (_countingCoroutine != null)
+        if (_countingRoutine != null)
         {
-            StopCoroutine(_countingCoroutine);
+            StopCoroutine(_countingRoutine);
         }
 
-        _isCounting = false;
+        _isValue = false;
     }
 
-    private IEnumerator CountRoutine()
+    private IEnumerator Numbering()
     {
         while (enabled)
         {
             yield return _waitDelay;
-            _counter++;
-            Changed?.Invoke(_counter);
-            Debug.Log(_counter);
+            _value++;
+            ValueChanged?.Invoke(_value);
         }
     }
 }
