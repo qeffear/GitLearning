@@ -6,12 +6,12 @@ public class CounterDisplay : MonoBehaviour
 
     private void OnEnable()
     {
-        _counter.CounterChanged += ShowCount;
+        _counter.Changed += ShowCount;
     }
 
     private void OnDisable()
     {
-        _counter.CounterChanged -= ShowCount;
+        _counter.Changed -= ShowCount;
     }
 
     public void ShowCount(int count)

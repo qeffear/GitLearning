@@ -10,8 +10,14 @@ public class Counter : MonoBehaviour
     private float _delay = 0.5f;
     private bool _isCounting = false;
     private Coroutine _countingCoroutine;
+    private WaitForSeconds _waitDelay;
 
-    public event Action<int> CounterChanged;
+    public event Action<int> Changed;
+
+    private void Awake()
+    {
+        _waitDelay = new WaitForSeconds(_delay);
+    }
 
     private void OnEnable()
     {
@@ -47,6 +53,7 @@ public class Counter : MonoBehaviour
         {
             StopCoroutine(_countingCoroutine);
         }
+
         _isCounting = false;
     }
 
@@ -54,9 +61,9 @@ public class Counter : MonoBehaviour
     {
         while (enabled)
         {
-            yield return new WaitForSeconds(_delay);
+            yield return _waitDelay;
             _counter++;
-            CounterChanged?.Invoke(_counter);
+            Changed?.Invoke(_counter);
             Debug.Log(_counter);
         }
     }
